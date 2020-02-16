@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/pathToFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="30dp"
+                    android:text="TextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/name"
+                    android:textSize="26sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/generateArr"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:onClick="generateArrOnClick"
+                    android:text="@string/but1"
+                    app:layout_constraintEnd_toStartOf="@+id/fromFile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/name" />
+
+                <Button
+                    android:id="@+id/fromFile"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:onClick="generateFromFile"
+                    android:text="@string/but2"
+                    app:layout_constraintBottom_toBottomOf="@+id/generateArr"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/generateArr"
+                    app:layout_constraintTop_toTopOf="@+id/generateArr" />
+
+                <Button
+                    android:id="@+id/sortArr"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:onClick="generateSortedArr"
+                    android:text="@string/but3"
+                    app:layout_constraintEnd_toStartOf="@+id/plot"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/graph"
+                    android:layout_width="310dp"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sortArr" />
+
+                <Button
+                    android:id="@+id/plot"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="plot"
+                    android:text="@string/but4"
+                    app:layout_constraintBottom_toBottomOf="@+id/sortArr"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/sortArr"
+                    app:layout_constraintTop_toTopOf="@+id/sortArr" />
+
+                <EditText
+                    android:id="@+id/textView"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="30dp"
+                    android:ems="10"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:isScrollContainer="true"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="true"
+                    android:text="Name"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/generateArr" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

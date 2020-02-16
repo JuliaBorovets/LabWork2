@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LabWork2</string>
+    <string name="name">Порозрядне сортування</string>
+    <string name="but1">Згенерувати масиви</string>
+    <string name="but2">Ввести масиви з файлу</string>
+    <string name="but3">Відсортувати масиви</string>
+    <string name="but4">Побудувати графік</string>
+
+</resources>
