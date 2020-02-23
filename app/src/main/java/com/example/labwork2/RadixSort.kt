@@ -6,13 +6,15 @@ class RadixSort(array: Array<Int>) {
     val arr: Array<Int> = array
     private val radix = array.size
     val sorted: Array<Int>
+    var end = 0.0
 
     init {
-        val beginTime: Long = System.currentTimeMillis()
+        var begin = 0.0
         this.sorted = sort()
-        val endTime: Long = System.currentTimeMillis()
-        this.time = (endTime - beginTime)/100.0
+        this.time = (end - begin)
+
     }
+
 
     fun sort(): Array<Int> {
         val sortedArr: Array<Int> = arr
@@ -46,14 +48,17 @@ class RadixSort(array: Array<Int>) {
         // Count frequencies
         for (i in array.indices) {
             bucketIndex = ((array[i] - minValue) / exponent % radix)
+            end++
             buckets[bucketIndex]++
         }
         // Compute cumulates
         for (i in 1 until radix) {
+            end++
             buckets[i] += buckets[i - 1]
         }
         // Move records
         for (i in array.indices.reversed()) {
+            end++
             bucketIndex = ((array[i] - minValue) / exponent % radix)
             output[--buckets[bucketIndex]] = array[i]
         }

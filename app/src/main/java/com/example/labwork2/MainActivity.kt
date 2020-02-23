@@ -26,13 +26,13 @@ class MainActivity : AppCompatActivity() {
     private var result: TextView? = null
     private var pathFile: String? = null
     var nameOfFile: String = "myLab2.txt"
-
+    
     private val baseFileContent: String = """
-12 -2 32 4 52 6 -7 38 9 41 22 12 3 34 -52 6 7 28 
-1 12 6 9 -1 2 32 2 12 3 34 -52 6 7 28 9 21 2 3 -44 
-5 2 8 3 1 3 5 2 1 6 9 -1 2 32 2 12 3 34 -52 6 7 28 
-2 1 5 2 4 3 32 4 52 6 -7 38 9 41 22 12 3 34 -52 32 
- """.trimIndent()
+12 -2 32 4 52 6 -7 38 -2 32 4 52 6 -7 38
+1 12 6 9 -1 2 32 2 12 3 34 9 -1 2 32 2 12 3 34
+5 2 8 3 1 3 5 2 1 6 9 -1 2 32 -2 32 4 52 6 -7 38
+2 1 5 2 4 3 32 4 52 6
+""".trimIndent()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,17 +47,6 @@ class MainActivity : AppCompatActivity() {
         pathToFile.append(pathFile)
     }
 
-    private fun createFile(){
-        if (!File("$pathFile/$nameOfFile").exists()){
-            val inFile = File("$pathFile/$nameOfFile")
-            PrintWriter(inFile).use { out -> out.println(baseFileContent) }
-            Toast.makeText(
-                this,
-                "File was created!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
 
     fun plot(view: View) {
         graph.removeAllSeries()
@@ -76,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             val graphPoints: Array<DataPoint> =
                 plottVal.map { key -> DataPoint(key.key.toDouble(), key.value) }.toTypedArray()
             val series: PointsGraphSeries<DataPointInterface> = PointsGraphSeries(graphPoints)
-
+            
             val function = interpolate()
             val squarePlotData: Array<DataPoint> = (minSize..maxSize step 1).map {
                 DataPoint(it.toDouble(), function(it.toDouble())) }.toTypedArray()
@@ -86,10 +75,12 @@ class MainActivity : AppCompatActivity() {
             graph.viewport.isYAxisBoundsManual = true
             graph.viewport.setMaxY(squarePlotData.last().y + 0.05)
             graph.viewport.isXAxisBoundsManual = true
+
+            graph.viewport.setMinY(squarePlotData.first().x)
             graph.viewport.setMinX(squarePlotData.first().x)
             graph.viewport.setMaxX(squarePlotData.last().x)
             series.shape = PointsGraphSeries.Shape.RECTANGLE
-            series.size = 3.5f
+            series.size = 4.5f
             series.color = Color.rgb(215, 0, 36)
             interpolatedPlot.color = Color.GRAY
 
@@ -115,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         arrays = generated
         show(view,text)
     }
-
+    
 
     fun generateSortedArr (view: View) {
         if (arrays.equals(nullArray)) {
@@ -125,13 +116,14 @@ class MainActivity : AppCompatActivity() {
             val sorted: Array<RadixSort> = Array(arrays.size) { i -> RadixSort(arrays[i]) }
             fun add(sum: MutableMap<Int, Double>, el: RadixSort): MutableMap<Int, Double> {
                 sum[el.arr.size] = el.time
+                el.end = 0.0
                 return sum
             }
             plottedValues = sorted.fold(mutableMapOf(), { sum, el -> add(sum, el) })
             show(view, parseForTextView(sorted))
         }
     }
-
+    
     private fun parseForTextView(sortedArr: Array<RadixSort>) : String {
         var res = ""
         for (i in sortedArr) {
@@ -153,13 +145,26 @@ class MainActivity : AppCompatActivity() {
         }
         return res
     }
-
+    
     private fun show(view: View, text: String) {
         textView.visibility = TextView.VISIBLE
         textView.setText(text)
 
         val params: ViewGroup.LayoutParams = textView.layoutParams
         textView.layoutParams = params
+    }
+
+
+    private fun createFile(){
+        if (!File("$pathFile/$nameOfFile").exists()){
+            val inFile = File("$pathFile/$nameOfFile")
+            PrintWriter(inFile).use { out -> out.println(baseFileContent) }
+            Toast.makeText(
+                this,
+                "File was created!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
 
@@ -178,14 +183,44 @@ class MainActivity : AppCompatActivity() {
                     line = reader.readLine()
                     str += line.plus("\n")
                 }
+                textView.setText(str)
                 this.arrays = parseInputFromFile(str)
+
                 show(view, parseForTextView(arrays))
+
                 fromFile.setOnClickListener { v -> generateSortedArr(v) }
+                plot.setOnClickListener { v -> plotFromFile(v) }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         } catch (e: FileNotFoundException) {
             Toast.makeText(this, "Ooops... Something went wrong.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun plotFromFile(v: View?) {
+
+        val plottVal = plottedValues
+        val minSize: Int = plottVal.keys.min() ?: 1
+        val maxSize: Int = plottVal.keys.max() ?: 1
+
+        val function = interpolate()
+        val squarePlotData: Array<DataPoint> = (minSize..maxSize step 1).map {
+            DataPoint(it.toDouble(), function(it.toDouble())) }.toTypedArray()
+        val interpolatedPlot: LineGraphSeries<DataPointInterface> =
+            LineGraphSeries(squarePlotData)
+
+        graph.viewport.isYAxisBoundsManual = true
+        graph.viewport.setMaxY(squarePlotData.last().y + 0.05)
+        graph.viewport.isXAxisBoundsManual = true
+
+        graph.viewport.setMinY(squarePlotData.first().y)
+        graph.viewport.setMinX(squarePlotData.first().x)
+        graph.viewport.setMaxX(squarePlotData.last().x)
+
+        interpolatedPlot.color = Color.GRAY
+
+        graph.addSeries(interpolatedPlot)
+
     }
 }
