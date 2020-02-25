@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             var text: String = "["
             for (j in i.sorted)
                 text+="$j, "
-            res+= "${text.dropLast(2)}] : ${i.time} \n\n"
+            res+= "${text.dropLast(2)}] time: ${i.time} \n\n"
         }
         return res
     }

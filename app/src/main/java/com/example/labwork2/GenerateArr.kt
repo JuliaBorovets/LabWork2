@@ -15,6 +15,6 @@ fun parseInputFromFile(src: String) : Array<Array<Int>> {
 }
 
 fun generateArr() : Array<Array<Int>> {
-    return Array(10) { i -> Array(100 + i*100) {
-        ((Math.random() - 0.5) * 100).roundToInt()} }
+    return Array(10) { i -> Array(2000 + i*1000) {
+        ((Math.random() - 0.5) * 50).roundToInt()} }
 }

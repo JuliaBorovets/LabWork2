@@ -1,10 +1,12 @@
 package com.example.labwork2
 
+import kotlin.math.pow
+
 class RadixSort(array: Array<Int>) {
 
     val time: Double
     val arr: Array<Int> = array
-    private val radix = array.size
+    private val radix = 10
     val sorted: Array<Int>
     var end = 0.0
 
@@ -58,7 +60,6 @@ class RadixSort(array: Array<Int>) {
         }
         // Move records
         for (i in array.indices.reversed()) {
-            end++
             bucketIndex = ((array[i] - minValue) / exponent % radix)
             output[--buckets[bucketIndex]] = array[i]
         }
